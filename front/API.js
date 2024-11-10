@@ -82,6 +82,8 @@ async function calcularFechaEntrega(modulo, severidad, cliente) {
     console.log("Horas de entrega:", horas_entrega);
 
     // Calcular la fecha de entrega
+    const horas_diferencia=-3;
+    fecha_actual.setHours(fecha_actual.getHours()+ horas_diferencia);
     const fecha_entrega = new Date(fecha_actual.getTime() + horas_entrega * 60 * 60 * 1000);
     const fecha_entrega_mysql = fecha_entrega.toISOString().slice(0, 19).replace('T', ' ');
     return fecha_entrega_mysql;

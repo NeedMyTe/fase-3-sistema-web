@@ -172,21 +172,21 @@ CREATE TABLE tiempos_entrega (
 INSERT INTO tiempos_entrega (nivel_servicio, severidad, tiempo_entrega, descripcion)
 VALUES 
 ('Platino', 'Crítica', 6, '6 horas (24x7)'),
-('Platino', 'Alta', 1, '1 día hábil'),
-('Platino', 'Normal', 1, '1 día hábil'),
-('Platino', 'Baja', 1, '1 día hábil'),
+('Platino', 'Alta', 24, '1 día hábil'),
+('Platino', 'Normal', 24, '1 día hábil'),
+('Platino', 'Baja', 24, '1 día hábil'),
 ('Oro', 'Crítica', 10, '10 horas (24x7)'),
-('Oro', 'Alta', 2, '2 días hábiles'),
-('Oro', 'Normal', 2, '2 días hábiles'),
-('Oro', 'Baja', 2, '2 días hábiles'),
-('Plata', 'Crítica', 3, '3 días hábiles'),
-('Plata', 'Alta', 4, '4 días hábiles'),
-('Plata', 'Normal', 4, '4 días hábiles'),
-('Plata', 'Baja', 4, '4 días hábiles'),
-('Bronce', 'Crítica', 6, '6 días hábiles'),
-('Bronce', 'Alta', 8, '8 días hábiles'),
-('Bronce', 'Normal', 8, '8 días hábiles'),
-('Bronce', 'Baja', 8, '8 días hábiles');
+('Oro', 'Alta', 48, '2 días hábiles'),
+('Oro', 'Normal', 48, '2 días hábiles'),
+('Oro', 'Baja', 48, '2 días hábiles'),
+('Plata', 'Crítica', 72, '3 días hábiles'),
+('Plata', 'Alta', 96, '4 días hábiles'),
+('Plata', 'Normal', 96, '4 días hábiles'),
+('Plata', 'Baja', 96, '4 días hábiles'),
+('Bronce', 'Crítica', 144, '6 días hábiles'),
+('Bronce', 'Alta', 192, '8 días hábiles'),
+('Bronce', 'Normal', 192, '8 días hábiles'),
+('Bronce', 'Baja', 192, '8 días hábiles');
 SELECT * FROM tiempos_entrega;
 DROP TABLE tiempos_entrega;
 SELECT nivel_servicio 
