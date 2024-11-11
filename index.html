@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Crear Ticket de Soporte</h1>
+
+    <label for="modulo">Módulo:</label>
+    <select id="modulo">
+        <option value="">Selecciona un módulo</option>
+    </select>
+
+    <label for="severidad">Severidad:</label>
+    <select id="severidad">
+        <option value="">Selecciona una severidad</option>
+    </select>
+
+    <label for="cliente">Cliente:</label>
+    <select id="cliente">
+        <option value="">Selecciona un cliente</option>
+    </select>
+
+    <label for="descripcion_breve">Descripción Breve:</label>
+    <textarea id="descripcion_breve" rows="3"></textarea>
+
+    <label for="descripcion_detallada">Descripción Detallada:</label>
+    <textarea id="descripcion_detallada" rows="5"></textarea>
+
+    <label for="fecha_inicio">Fecha de Inicio:</label>
+    <input type="date" id="fecha_inicio" />
+
+    <label for="fecha_entrega">Fecha de Entrega:</label>
+    <input type="date" id="fecha_entrega" />
+
+    <label for="historial">Historial:</label>
+    <textarea id="historial" rows="3"></textarea>
+
+    <button id="crear_ticket">Crear Ticket</button>
+
+    <div id="mensaje"></div>
+
+    <script>
+        // Cargar los datos para los comboboxes
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:3000/api/datos')
+                .then(response => response.json())
+                .then(data => {
+                    // Cargar módulos
+                    const moduloSelect = document.getElementById('modulo');
+                    data.modulos.forEach(modulo => {
+                        const option = document.createElement('option');
+                        option.value = modulo.id;
+                        option.textContent = modulo.nombre;
+                        moduloSelect.appendChild(option);
+                    });
+
+                    // Cargar severidades
+                    const severidadSelect = document.getElementById('severidad');
+                    data.severidades.forEach(severidad => {
+                        const option = document.createElement('option');
+                        option.value = severidad.id;
+                        option.textContent = severidad.nombre;
+                        severidadSelect.appendChild(option);
+                    });
+
+                    // Cargar clientes
+                    const clienteSelect = document.getElementById('cliente');
+                    data.clientes.forEach(cliente => {
+                        const option = document.createElement('option');
+                        option.value = cliente.id;
+                        option.textContent = cliente.nombre;
+                        clienteSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los datos:', error));
+        });
+
+        // Crear ticket
+        document.getElementById('crear_ticket').addEventListener('click', function() {
+            const modulo_id = document.getElementById('modulo').value;
+            const severidad_id = document.getElementById('severidad').value;
+            const cliente_id = document.getElementById('cliente').value;
+            const descripcion_breve = document.getElementById('descripcion_breve').value;
+            const descripcion_detallada = document.getElementById('descripcion_detallada').value;
+            const fecha_inicio = document.getElementById('fecha_inicio').value;
+            const fecha_entrega = document.getElementById('fecha_entrega').value;
+            const historial = document.getElementById('historial').value;
+
+            fetch('http://localhost:3306/api/tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    modulo_id, severidad_id, cliente_id, descripcion_breve, descripcion_detallada, fecha_inicio, fecha_entrega, historial
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ticket_id) {
+                    document.getElementById('mensaje').textContent = `Ticket creado con éxito! ID: ${data.ticket_id}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error al crear el ticket:', error);
+            });
+        });
+    </script>
+
+</body>
+</html>
