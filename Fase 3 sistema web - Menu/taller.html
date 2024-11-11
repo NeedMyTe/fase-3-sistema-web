@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Ticket</title>
+    
+    <style media="screen">
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgba(174, 181, 245, 0.226);
+            font-family: Arial, sans-serif;
+        }
+        .cuadro-rosa {
+            background-color: #ff00f21f;
+            color: rgb(0, 0, 0);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+        .card-img-top {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .card-body {
+            padding-top: 10px;
+        }
+        .card-text {
+            margin-top: 10px;
+        }
+</style>
+
+</head>
+<body>
+    <!--Color para todo el proceso-->
+    <div class="cuadro-rosa">
+
+        <h1 style="text-align: center;">Actualizar ticket</h1>
+        <!-- Campo para ingresar el número de ticket -->
+        <label for="ticketId">Número de Ticket:</label>
+        <input type="text" id="ticketId">
+        <button style = "display: inline-block; padding: 5px 10px; background-color: #ce7cd19f; color: rgb(0, 0, 0)" onclick="cargarTicket()">Cargar Ticket</button>
+
+        <!-- Formulario de actualización de ticket -->
+        <div id="formularioActualizacion" style="display:none;">
+            <label for="cliente">Cliente:</label>
+            <input type="text" id="cliente" readonly>
+
+            <label for="modulo">Módulo:</label>
+            <input type="text" id="modulo">
+
+            <label for="severidad">Severidad:</label>
+            <input type="text" id="severidad">
+
+            <button onclick="actualizarTicket()">Guardar Cambios</button>
+        </div>
+
+        <p id="mensaje"></p>
+
+        <script>
+            async function cargarTicket() {
+                const ticketId = document.getElementById("ticketId").value;
+                try {
+                    const response = await fetch(`/api/tickets/${ticketId}`);
+                    if (!response.ok) throw new Error("Ticket no encontrado");
+
+                    const ticket = await response.json();
+
+                    document.getElementById("cliente").value = ticket.cliente;
+                    document.getElementById("modulo").value = ticket.modulo;
+                    document.getElementById("severidad").value = ticket.severidad;
+                    document.getElementById("formularioActualizacion").style.display = "block";
+                    document.getElementById("mensaje").innerText = "";
+
+                } catch (error) {
+                    document.getElementById("mensaje").innerText = error.message;
+                }
+            }
+
+            async function actualizarTicket() {
+                const ticketId = document.getElementById("ticketId").value;
+                const modulo = document.getElementById("modulo").value;
+                const severidad = document.getElementById("severidad").value;
+
+                try {
+                    const response = await fetch(`/api/tickets/${ticketId}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ modulo, severidad })
+                    });
+
+                    if (!response.ok) throw new Error("Error al actualizar el ticket");
+
+                    document.getElementById("mensaje").innerText = "Ticket actualizado correctamente.";
+                } catch (error) {
+                    document.getElementById("mensaje").innerText = error.message;
+                }
+            }
+    </script>
+</body>
+</html>
