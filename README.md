@@ -1,5 +1,5 @@
 # fase-3-sistema-web
-# Integrantes: Nicolas Sepulveda - Martin Caamaño - 
+# Integrantes: Nicolas Sepulveda - Martin Caamaño - Bastian Huerta
 #
 #
 #
