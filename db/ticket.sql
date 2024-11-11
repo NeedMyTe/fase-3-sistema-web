@@ -9,7 +9,14 @@ CREATE TABLE tickets (
     fecha_entrega DATETIME,
     descripcion_breve VARCHAR(100),
     descripcion_detallada VARCHAR(1000)
-    
+    nivel_servicio_id INT,
+    tiempo_entrega_id INT,
+    CONSTRAINT fk_nivel_servicio_ticket FOREIGN KEY (nivel_servicio_id) 
+        REFERENCES niveles_servicio(id) 
+        ON DELETE SET NULL,
+    CONSTRAINT fk_tiempo_entrega_ticket FOREIGN KEY (tiempo_entrega_id) 
+        REFERENCES tiempos_entrega(id) 
+        ON DELETE SET NULL
 );
 DESCRIBE tickets;
 INSERT INTO tickets (modulo, severidad, cliente, estado, fecha_inicio, fecha_entrega, descripcion_breve,descripcion_detallada)
@@ -167,6 +174,9 @@ CREATE TABLE tiempos_entrega (
     severidad VARCHAR(255) NOT NULL,
     tiempo_entrega INT NOT NULL,  -- Tiempo en horas o días según el nivel de severidad
     descripcion VARCHAR(255)      -- Descripción opcional
+     CONSTRAINT fk_nivel_servicio FOREIGN KEY (nivel_servicio) 
+        REFERENCES niveles_servicio(nivel_servicio) 
+        ON DELETE CASCADE
 );
 -- Insertar tiempos de entrega para cada combinación de nivel de servicio y severidad
 INSERT INTO tiempos_entrega (nivel_servicio, severidad, tiempo_entrega, descripcion)

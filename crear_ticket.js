@@ -2,6 +2,7 @@ const express= require("express");
 const mysql = require('mysql2/promise');
 const APP=express();
 const port=3000;
+const Axios=require('axios');
 APP.use(express.json());
 let conexion;
 async function conectarBD() {
@@ -92,9 +93,19 @@ async function calcularFechaEntrega(modulo, severidad, cliente) {
     throw new Error(`Error al calcular la fecha de entrega: ${error.message}`);
   }
 }
+async function obtenerDatosDesdeAPI() {
+  try {
+    const response = await axios.get('https://miapi.com/datos'); // URL de la API externa
+    return response.data; // Devolver los datos obtenidos
+  } catch (error) {
+    console.error('Error al obtener datos desde la API externa:', error);
+    throw new Error('No se pudieron obtener los datos de la API externa');
+  }
+}
 APP.post('/CreateTickets', async (req, res) => {
   try {
-    const { modulo, severidad, cliente, descripcion_breve, descripcion_detallada } = req.body;
+    const datosAPI= await obtenerDatosDesdeAPI();
+    const { modulo, severidad, cliente, descripcion_breve, descripcion_detallada } = datosAPI;
     const fecha_inicio = obtener_fecha();
     const fecha_entrega = await calcularFechaEntrega(modulo, severidad, cliente);
   
